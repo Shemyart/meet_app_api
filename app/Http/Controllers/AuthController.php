@@ -19,7 +19,7 @@ class AuthController extends Controller
         Helpers $helpers
     )
     {
-       $this->middleware('auth:api', ['except' => ['auth/phone', 'auth/verify']]);
+       $this->middleware('auth:api', ['except' => ['phoneAuth', 'verifyCode']]);
         $this->created = 'Создано';
         $this->createdCode = 201;
         $this->unauthorized = 'Неавторизован';
