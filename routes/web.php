@@ -18,6 +18,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/', [AuthController::class, 'profile']);
             Route::post('/', [UserController::class, 'edit']);
             Route::delete('/', [UserController::class, 'delete']);
+            Route::get('/matches', [PersonController::class, 'matches']);
         });
         Route::group(['prefix' => 'persons'], function () {
             Route::get('/', [PersonController::class, 'getAll']);

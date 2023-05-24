@@ -49,6 +49,14 @@ class PersonController
      * Получить список совпадений
      */
     public function matches(){
-
+        $persons = $this->personRepository->getMatches();
+        if($persons->isEmpty()){
+            return response()->json([
+                'message' => 'Список пуст'
+            ]);
+        }
+        return response()->json([
+            'persons' => PersonResource::collection($persons)
+        ]);
     }
 }
