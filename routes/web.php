@@ -23,6 +23,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'persons'], function () {
             Route::get('/', [PersonController::class, 'getAll']);
             Route::get('/{id}', [PersonController::class, 'getById']);
+            Route::get('/{id}/like', [PersonController::class, 'like']);
+            Route::get('/{id}/dislike', [PersonController::class, 'dislike']);
         });
 
     });
