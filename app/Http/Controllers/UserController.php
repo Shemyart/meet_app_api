@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class UserController extends Controller
 {
-    public function getProfile(){
-        return 1;
+    /**
+     * Получить профиль пользователя
+     * @return int
+     */
+    public function edit(Request $request){
+
     }
 }
