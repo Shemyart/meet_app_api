@@ -4,15 +4,21 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\User;
 use App\Repositories\Interfaces\PersonRepositoryInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PersonRepository implements PersonRepositoryInterface
 {
+    const ZERO_AGE = 0;
+    const MAX_AGE = 100;
+    const DEFAULT_GENDER = 'М';
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @param $request
+     * @return Collection
      */
-    public function all(): \Illuminate\Support\Collection
+    public function all($request): Collection
     {
         $user = auth()->user();
 
@@ -25,11 +31,22 @@ class PersonRepository implements PersonRepositoryInterface
 
         $persons = DB::table('users')->where('id', '!=', $user->id)
             //->where('gender', '!=', $user->gender)
-            ->where('city', $user->city)
-            ->whereBetween('age', [(int)$user->age - 2, (int)$user->age + 2])
-            ->whereNotIn('user_id', $like)
-            ->whereNotIn('user_id', $dislike)
-            ->get();
+            ->where('city', $user->city);
+            !empty($like) ? $persons->whereNotIn('id', $like) : null;
+            !empty($dislike) ? $persons->whereNotIn('id', $dislike) : null;
+        $persons = $this->filtration($persons, $request);
+
+        $persons = $persons->get();
+        return $persons;
+    }
+
+    public function filtration($persons, $request){
+        $minAge = $request['minAge'] ?? self::ZERO_AGE;
+        $maxAge = $request['maxAge'] ?? self::MAX_AGE;
+        $gender = $request['gender'] ?? self::DEFAULT_GENDER;
+
+        $persons = $persons->whereBetween('age', [$minAge, $maxAge]);
+        $persons = $persons->where('gender', $gender);
         return $persons;
     }
 
@@ -46,9 +63,9 @@ class PersonRepository implements PersonRepositoryInterface
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function getMatches(): \Illuminate\Support\Collection
+    public function getMatches(): Collection
     {
         $user = auth()->user();
         $matches = DB::table('matches')

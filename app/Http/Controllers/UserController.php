@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
     /**
      * Редактировать профиль пользователя
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return JsonResponse
+     * @throws ValidationException
      */
-    public function edit(Request $request): \Illuminate\Http\JsonResponse
+    public function edit(Request $request): JsonResponse
     {
         $this->validate($request, [
             'name' => 'required|string',

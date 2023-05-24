@@ -2,9 +2,11 @@
 
 namespace App\Repositories\Interfaces;
 
+use Illuminate\Http\Request;
+
 interface PersonRepositoryInterface
 {
-    public function all();
+    public function all($request);
 
     public function getById($id);
 

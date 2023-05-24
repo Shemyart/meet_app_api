@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PersonResource;
 use App\Repositories\Interfaces\PersonRepositoryInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class PersonController
 {
@@ -19,9 +20,9 @@ class PersonController
      * Получить профили на выбор
      * @return JsonResponse
      */
-    public function getAll(): JsonResponse
+    public function getAll(Request $request): JsonResponse
     {
-        $persons = $this->personRepository->all();
+        $persons = $this->personRepository->all($request);
         if ($persons == null) {
             return response()->json([
                 'message' => 'Профили закончились'
